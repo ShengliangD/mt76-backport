@@ -67,9 +67,9 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
 			IEEE80211_HE_MAC_CAP0_HTC_HE;
 		he_cap_elem->mac_cap_info[3] =
 			IEEE80211_HE_MAC_CAP3_OMI_CONTROL |
-			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3;
+			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK;
 		he_cap_elem->mac_cap_info[4] =
-			IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU;
+			IEEE80211_HE_MAC_CAP4_AMDSU_IN_AMPDU;
 
 		if (band == NL80211_BAND_2GHZ)
 			he_cap_elem->phy_cap_info[0] =
@@ -135,7 +135,7 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
 				IEEE80211_HE_PHY_CAP6_PARTIAL_BW_EXT_RANGE |
 				IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT;
 			he_cap_elem->phy_cap_info[7] |=
-				IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_SUPP |
+				IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR |
 				IEEE80211_HE_PHY_CAP7_HE_SU_MU_PPDU_4XLTF_AND_08_US_GI;
 			he_cap_elem->phy_cap_info[8] |=
 				IEEE80211_HE_PHY_CAP8_20MHZ_IN_40MHZ_HE_PPDU_IN_2G |
@@ -171,8 +171,8 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
 			mt7921_gen_ppe_thresh(he_cap->ppe_thres, nss);
 		} else {
 			he_cap_elem->phy_cap_info[9] |=
-				u8_encode_bits(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US,
-					       IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK);
+				u8_encode_bits(0x2,
+					       IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_MASK);
 		}
 
 		if (band == NL80211_BAND_6GHZ) {
@@ -1383,6 +1383,7 @@ static void mt7921_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 			   HZ / 2);
 }
 
+/*
 static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
 					 struct ieee80211_vif *vif,
 					 struct ieee80211_sta *sta,
@@ -1403,6 +1404,7 @@ static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
 
 	mt7921_mutex_release(dev);
 }
+*/
 
 #if IS_ENABLED(CONFIG_IPV6)
 static void mt7921_ipv6_addr_change(struct ieee80211_hw *hw,
@@ -1465,6 +1467,7 @@ static void mt7921_ipv6_addr_change(struct ieee80211_hw *hw,
 }
 #endif
 
+/*
 static int mt7921_set_sar_specs(struct ieee80211_hw *hw,
 				const struct cfg80211_sar_specs *sar)
 {
@@ -1483,6 +1486,7 @@ out:
 
 	return err;
 }
+*/
 
 static void
 mt7921_channel_switch_beacon(struct ieee80211_hw *hw,
@@ -1558,7 +1562,7 @@ const struct ieee80211_ops mt7921_ops = {
 	.sta_state = mt7921_sta_state,
 	.sta_pre_rcu_remove = mt76_sta_pre_rcu_remove,
 	.set_key = mt7921_set_key,
-	.sta_set_decap_offload = mt7921_sta_set_decap_offload,
+	// .sta_set_decap_offload = mt7921_sta_set_decap_offload,
 #if IS_ENABLED(CONFIG_IPV6)
 	.ipv6_addr_change = mt7921_ipv6_addr_change,
 #endif /* CONFIG_IPV6 */
@@ -1592,7 +1596,7 @@ const struct ieee80211_ops mt7921_ops = {
 	.set_rekey_data = mt7921_set_rekey_data,
 #endif /* CONFIG_PM */
 	.flush = mt7921_flush,
-	.set_sar_specs = mt7921_set_sar_specs,
+	// .set_sar_specs = mt7921_set_sar_specs,
 };
 EXPORT_SYMBOL_GPL(mt7921_ops);
 

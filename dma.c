@@ -755,7 +755,7 @@ mt76_dma_init(struct mt76_dev *dev,
 	init_dummy_netdev(&dev->tx_napi_dev);
 	snprintf(dev->napi_dev.name, sizeof(dev->napi_dev.name), "%s",
 		 wiphy_name(dev->hw->wiphy));
-	dev->napi_dev.threaded = 1;
+	// dev->napi_dev.threaded = 1;
 
 	mt76_for_each_q_rx(dev, i) {
 		netif_napi_add(&dev->napi_dev, &dev->napi[i], poll, 64);

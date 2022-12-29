@@ -814,7 +814,7 @@ void mt7921_tx_check_aggr(struct ieee80211_sta *sta, __le32 *txwi)
 	u16 fc, tid;
 	u32 val;
 
-	if (!sta || !(sta->deflink.ht_cap.ht_supported || sta->deflink.he_cap.has_he))
+	if (!sta || !(sta->ht_cap.ht_supported || sta->he_cap.has_he))
 		return;
 
 	tid = le32_get_bits(txwi[1], MT_TXD1_TID);
@@ -1154,8 +1154,8 @@ mt7921_vif_connect_iter(void *priv, u8 *mac,
 	struct mt7921_dev *dev = mvif->phy->dev;
 	struct ieee80211_hw *hw = mt76_hw(dev);
 
-	if (vif->type == NL80211_IFTYPE_STATION)
-		ieee80211_disconnect(vif, true);
+	// if (vif->type == NL80211_IFTYPE_STATION)
+	//	ieee80211_disconnect(vif, true);
 
 	mt76_connac_mcu_uni_add_dev(&dev->mphy, vif, &mvif->sta.wcid, true);
 	mt7921_mcu_set_tx(dev, vif);
