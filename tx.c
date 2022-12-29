@@ -65,10 +65,8 @@ mt76_tx_status_unlock(struct mt76_dev *dev, struct sk_buff_head *list)
 
 		wcid = rcu_dereference(dev->wcid[cb->wcid]);
 		if (wcid) {
-			printk(KERN_WARNING "disabled during backport");
-			// status.sta = wcid_to_sta(wcid);
-			// status.rates = NULL;
-			// status.n_rates = 0;
+			status.sta = wcid_to_sta(wcid);
+			status.rate = NULL;
 		}
 
 		hw = mt76_tx_status_get_hw(dev, skb);
